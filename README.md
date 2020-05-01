@@ -96,3 +96,13 @@ JSON format. Each build contains the following files:
 - `API-Dump.json`: Translated from the original dump format. Content may change
   over time as accuracy is improved.
 - `ReflectionMetadata.xml`: Reflection metadata file.
+
+#### Production
+The `production` directory contains builds that are added as they are released
+by Roblox. Each build contains the following files:
+
+- `API-Dump.json`: API dump in JSON format.
+- `ReflectionMetadata.xml`: Reflection metadata file.
+
+*Some files, such as ReflectionMetadata.xml, are missing from many builds.
+Missing files will be added if recovered.*
