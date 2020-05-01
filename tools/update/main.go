@@ -16,6 +16,7 @@ import (
 
 var ExpectedFiles = []expectedFile{
 	{Name: "API-Dump.json", Location: "APIDump"},
+	{Name: "ClassImages.png", Location: "ExplorerIcons"},
 	{Name: "ReflectionMetadata.xml", Location: "ReflectionMetadata"},
 }
 
