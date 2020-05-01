@@ -38,7 +38,8 @@ type Metadata struct {
 	Missing map[string][]string
 }
 
-func GetCurrentMetadata(root string) (meta Metadata) {
+// Get content of current metadata file.
+func LoadMetadata(root string) (meta Metadata) {
 	f, err := os.Open(filepath.Join(root, MetadataFileName))
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -53,30 +54,28 @@ func GetCurrentMetadata(root string) (meta Metadata) {
 	return meta
 }
 
-type BuildKey struct {
-	GUID    string
-	Date    int64
-	Version rbxfetch.Version
-}
-
-type KnownBuilds map[BuildKey]bool
-
-func (k KnownBuilds) Has(b Build) bool {
-	return k[bkey(b)]
-}
-
-func (k KnownBuilds) Add(b Build) {
-	k[bkey(b)] = true
-}
-
-func bkey(b Build) BuildKey {
-	return BuildKey{
-		GUID:    b.GUID,
-		Date:    b.Date.Unix(),
-		Version: b.Version,
+// Get list of files that need to be downloaded.
+func CheckFiles(root, guid string, meta Metadata) (files []string) {
+	missing := meta.Missing[guid]
+loop:
+	for _, file := range meta.Files {
+		path := filepath.Join(root, guid, file)
+		if _, err := os.Lstat(path); !os.IsNotExist(err) {
+			// Skip file that exists.
+			continue loop
+		}
+		for _, m := range missing {
+			if m == file {
+				// Skip file already known to be missing.
+				continue loop
+			}
+		}
+		files = append(files, file)
 	}
+	return files
 }
 
+// Download file from the first successful Location to dstpath.
 func FetchFile(client *rbxfetch.Client, guid, dstpath string, locs []rbxfetch.Location) error {
 	var src io.ReadCloser
 	for i, loc := range locs {
@@ -102,6 +101,7 @@ func FetchFile(client *rbxfetch.Client, guid, dstpath string, locs []rbxfetch.Lo
 	return nil
 }
 
+// Write metadata file.
 func UpdateMetadata(root string, meta Metadata) {
 	metadata, err := os.Create(filepath.Join(root, MetadataFileName))
 	but.IfFatal(err, "update metadata")
@@ -113,6 +113,7 @@ func UpdateMetadata(root string, meta Metadata) {
 	but.IfFatal(err, "encode metadata")
 }
 
+// Get expected file Location from file name.
 func FindLocation(name string) string {
 	for _, file := range ExpectedFiles {
 		if file.Name == name {
@@ -131,7 +132,8 @@ func main() {
 	buildsPath := filepath.Join(rootPath, BuildsDirName)
 	but.IfFatal(os.MkdirAll(buildsPath, 0755), "make builds directory")
 
-	meta := GetCurrentMetadata(rootPath)
+	// Load metadata.
+	meta := LoadMetadata(rootPath)
 	meta.Files = make([]string, len(ExpectedFiles))
 	for i, file := range ExpectedFiles {
 		meta.Files[i] = file.Name
@@ -141,29 +143,57 @@ func main() {
 		meta.Missing = map[string][]string{}
 	}
 
-	knownBuilds := KnownBuilds{}
-	for _, build := range meta.Builds {
-		knownBuilds.Add(build)
-	}
-
+	// Init client.
 	client := rbxfetch.NewClient()
 	client.CacheMode = rbxfetch.CacheNone
 
-	// Find new builds.
-	builds, err := client.Builds()
-	but.IfFatal(err, "fetch builds")
+	// Merge new builds.
+	{
+		builds, err := client.Builds()
+		but.IfFatal(err, "fetch builds")
+		type BuildKey struct {
+			GUID    string
+			Date    int64
+			Version rbxfetch.Version
+		}
+		knownBuilds := map[BuildKey]struct{}{}
+		for _, build := range meta.Builds {
+			key := BuildKey{
+				GUID:    build.GUID,
+				Date:    build.Date.Unix(),
+				Version: build.Version,
+			}
+			knownBuilds[key] = struct{}{}
+		}
+		for _, build := range builds {
+			key := BuildKey{
+				GUID:    build.GUID,
+				Date:    build.Date.Unix(),
+				Version: build.Version,
+			}
+			if _, ok := knownBuilds[key]; ok {
+				continue
+			}
+			meta.Builds = append(meta.Builds, build)
+		}
+		sort.Slice(meta.Builds, func(i, j int) bool {
+			return meta.Builds[i].Date.Before(meta.Builds[j].Date)
+		})
+	}
 
 	// Fetch files.
-	for _, build := range builds {
-		if knownBuilds.Has(build) {
+	for _, build := range meta.Builds {
+		files := CheckFiles(buildsPath, build.GUID, meta)
+		if len(files) == 0 {
 			continue
 		}
 		path := filepath.Join(buildsPath, build.GUID)
 		if err := os.Mkdir(path, 0755); err != nil && !os.IsExist(err) {
 			but.IfFatal(err, "make build directory")
 		}
-		var missing []string
-		for _, file := range meta.Files {
+		missing := make([]string, 0, len(meta.Files))
+		missing = append(missing, meta.Missing[build.GUID]...)
+		for _, file := range files {
 			err := FetchFile(client,
 				build.GUID,
 				filepath.Join(buildsPath, build.GUID, file),
@@ -179,13 +209,9 @@ func main() {
 		if len(missing) > 0 {
 			meta.Missing[build.GUID] = missing
 		}
-		meta.Builds = append(meta.Builds, build)
-		UpdateMetadata(rootPath, meta)
 	}
 
-	sort.Slice(meta.Builds, func(i, j int) bool {
-		return meta.Builds[i].Date.Before(meta.Builds[j].Date)
-	})
+	// Write metadata.
 	UpdateMetadata(rootPath, meta)
 
 	// Write latest.
@@ -226,6 +252,6 @@ func main() {
 		} else {
 			meta.Missing[guid] = missing
 		}
-		UpdateMetadata(rootPath, meta)
 	}
+	UpdateMetadata(rootPath, meta)
 }
