@@ -11,31 +11,36 @@ import (
 	"sort"
 
 	"github.com/anaminus/but"
+	"github.com/robloxapi/rbxdump/histlog"
 	"github.com/robloxapi/rbxfetch"
 )
 
 var ExpectedFiles = []expectedFile{
-	{Name: "API-Dump.json", Location: "APIDump"},
-	{Name: "ClassImages.png", Location: "ExplorerIcons"},
-	{Name: "ReflectionMetadata.xml", Location: "ReflectionMetadata"},
+	{Name: "API-Dump.json", Method: Client.APIDump},
+	{Name: "ClassImages.png", Method: Client.ClassImages},
+	{Name: "ReflectionMetadata.xml", Method: Client.ReflectionMetadata},
 }
 
-const RootPath = "../../data"
-const GroupName = "production"
-const BuildsDirName = "builds"
-const MetadataFileName = "metadata.json"
-const LatestFileName = "latest.json"
+const (
+	RootPath         = "../../data"
+	GroupName        = "production"
+	BuildsDirName    = "builds"
+	MetadataFileName = "metadata.json"
+	LatestFileName   = "latest.json"
+)
+
+var Client = rbxfetch.NewClient()
 
 type expectedFile struct {
-	Name     string
-	Location string
+	Name   string
+	Method func(guid string) (r io.ReadCloser, err error)
 }
 
-type Build = rbxfetch.Build
+type Version = histlog.Version
 
 type Metadata struct {
 	Files   []string
-	Builds  []Build
+	Builds  []rbxfetch.Build
 	Missing map[string][]string
 }
 
@@ -77,25 +82,19 @@ loop:
 }
 
 // Download file from the first successful Location to dstpath.
-func FetchFile(client *rbxfetch.Client, guid, dstpath string, locs []rbxfetch.Location) error {
-	var src io.ReadCloser
-	for i, loc := range locs {
-		_, rc, err := client.Get(loc, guid)
-		if err != nil {
-			if i < len(locs)-1 {
-				continue
-			}
-			return fmt.Errorf("fetch file: %w", err)
-		}
-		src = rc
-		break
+func FetchFile(guid, dstpath string, method func(string) (io.ReadCloser, error)) error {
+	src, err := method(guid)
+	if err != nil {
+		return fmt.Errorf("fetch file: %w", err)
 	}
 	defer src.Close()
+
 	dst, err := os.Create(dstpath)
 	if err != nil {
 		return fmt.Errorf("create file: %w", err)
 	}
 	defer dst.Close()
+
 	if _, err = io.Copy(dst, src); err != nil {
 		return fmt.Errorf("write file: %w", err)
 	}
@@ -114,14 +113,14 @@ func UpdateMetadata(root string, meta Metadata) {
 	but.IfFatal(err, "encode metadata")
 }
 
-// Get expected file Location from file name.
-func FindLocation(name string) string {
+// Get expected file Method from file name.
+func FindMethod(name string) func(string) (io.ReadCloser, error) {
 	for _, file := range ExpectedFiles {
 		if file.Name == name {
-			return file.Location
+			return file.Method
 		}
 	}
-	return ""
+	return nil
 }
 
 func main() {
@@ -145,12 +144,11 @@ func main() {
 	}
 
 	// Init client.
-	client := rbxfetch.NewClient()
-	client.CacheMode = rbxfetch.CacheNone
+	Client.CacheMode = rbxfetch.CacheNone
 
 	// Merge new builds.
 	{
-		builds, err := client.Builds()
+		builds, err := Client.Builds()
 		but.IfFatal(err, "fetch builds")
 		type BuildKey struct {
 			GUID    string
@@ -195,10 +193,10 @@ func main() {
 		missing := make([]string, 0, len(meta.Files))
 		missing = append(missing, meta.Missing[build.GUID]...)
 		for _, file := range files {
-			err := FetchFile(client,
+			err := FetchFile(
 				build.GUID,
 				filepath.Join(buildsPath, build.GUID, file),
-				client.Config.Locations[FindLocation(file)],
+				FindMethod(file),
 			)
 			if err != nil {
 				missing = append(missing, file)
@@ -236,10 +234,10 @@ func main() {
 	for guid, files := range meta.Missing {
 		var missing []string
 		for _, file := range files {
-			err := FetchFile(client,
+			err := FetchFile(
 				guid,
 				filepath.Join(buildsPath, guid, file),
-				client.Config.Locations[FindLocation(file)],
+				FindMethod(file),
 			)
 			if err != nil {
 				missing = append(missing, file)
