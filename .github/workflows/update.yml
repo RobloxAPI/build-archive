@@ -31,7 +31,7 @@
                     "name": "Generate module",
                     "env": {"GOROOT": "/usr/local/go1.14"},
                     "run": "
-                        cd $GITHUB_WORKSPACE/../../build-archive &&
+                        cd $GITHUB_WORKSPACE/build-archive &&
                         /usr/local/go1.14/bin/go mod init github.com/robloxapi/build-archive ||
                         true
                     ",
@@ -40,7 +40,7 @@
                     "name": "Get dependencies",
                     "env": {"GOROOT": "/usr/local/go1.14"},
                     "run": "
-                        cd $GITHUB_WORKSPACE/../../build-archive &&
+                        cd $GITHUB_WORKSPACE/build-archive &&
                         /usr/local/go1.14/bin/go get -v -d ./...
                     ",
                 },
@@ -48,13 +48,13 @@
                     "name": "Compile executable",
                     "env": {"GOROOT": "/usr/local/go1.14"},
                     "run": "
-                        cd $GITHUB_WORKSPACE/../../build-archive/tools/update &&
+                        cd $GITHUB_WORKSPACE/build-archive/tools/update &&
                         /usr/local/go1.14/bin/go build -v .
                     ",
                 },
                 {
                     "name": "Rebuild website",
-                    "run": "$GITHUB_WORKSPACE/../../build-archive/tools/update/update -config $GITHUB_WORKSPACE/../../build-archive/tools/update/config.json",
+                    "run": "$GITHUB_WORKSPACE/build-archive/tools/update/update -config $GITHUB_WORKSPACE/build-archive/tools/update/config.json",
                 },
                 {
                     "name": "Commit and push website",
