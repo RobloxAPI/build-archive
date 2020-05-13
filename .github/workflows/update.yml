@@ -53,6 +53,10 @@
 					",
 				},
 				{
+					"name": "Ignore generated files",
+					"run": "echo -e '.gitignore\ngo.mod\ngo.sum\n/tools/update/update' >> .gitignore",
+				},
+				{
 					"name": "Run updater",
 					"run": "
 						cd $GITHUB_WORKSPACE/tools/update &&
