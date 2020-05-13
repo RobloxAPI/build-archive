@@ -1,0 +1,36 @@
+{
+	"Methods": {
+		"Builds": ["Builds"],
+		"Latest": ["Latest"],
+		"ReflectionMetadata": ["ReflectionMetadata"],
+		"ClassImages": ["ClassImages", "ExplorerIcons"],
+		"Live": ["Live", "Live64"]
+	},
+	"Chains": {
+		"Builds": [
+			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/DeployHistory.txt"}}
+		],
+		"Latest": [
+			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/versionQTStudio"}}
+		],
+		"Live": [
+			{"Filter": "url", "Params": {"URL": "https://versioncompatibility.api.roblox.com/GetCurrentClientVersionUpload/?apiKey=76e5a40c-3ae1-4028-9f10-7c62520bd94f&binaryType=WindowsStudio"}}
+		],
+		"Live64": [
+			{"Filter": "url", "Params": {"URL": "https://versioncompatibility.api.roblox.com/GetCurrentClientVersionUpload/?apiKey=76e5a40c-3ae1-4028-9f10-7c62520bd94f&binaryType=WindowsStudio64"}}
+		],
+		"ReflectionMetadata": [
+			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-RobloxStudio.zip"}},
+			{"Filter": "zip", "Params": {"File": "ReflectionMetadata.xml"}}
+		],
+		"ClassImages": [
+			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-content-textures2.zip#ClassImages.PNG"}},
+			{"Filter": "zip", "Params": {"File": "ClassImages.PNG"}}
+		],
+		"ExplorerIcons": [
+			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-RobloxStudio.zip#RobloxStudioBeta.exe"}},
+			{"Filter": "zip", "Params": {"File": "RobloxStudioBeta.exe"}},
+			{"Filter": "iconscan", "Params": {"Size": 16}}
+		]
+	}
+}

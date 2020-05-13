@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
@@ -125,7 +126,9 @@ func FindMethod(name string) func(string) (io.ReadCloser, error) {
 
 func main() {
 	var retry bool
+	var configFile string
 	flag.BoolVar(&retry, "retry", false, "Attempt to download known missing files.")
+	flag.StringVar(&configFile, "config", "", "Configure update client.")
 	flag.Parse()
 
 	rootPath := filepath.Join(RootPath, GroupName)
@@ -145,6 +148,13 @@ func main() {
 
 	// Init client.
 	Client.CacheMode = rbxfetch.CacheNone
+	if configFile != "" {
+		b, err := ioutil.ReadFile(configFile)
+		but.IfFatal(err, "read config file")
+		var config rbxfetch.Config
+		but.IfFatal(json.Unmarshal(b, &config), "decode config")
+		but.IfFatal(Client.SetConfig(config), "set config")
+	}
 
 	// Merge new builds.
 	{
