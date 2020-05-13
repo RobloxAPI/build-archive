@@ -1,0 +1,77 @@
+{
+    "name": "Update production files",
+    "on": {
+        "schedule": [{"cron": "14 */6 * * *"}],
+        "push": {
+            "branches": ["update"],
+        },
+    },
+    "jobs": {
+        "update": {
+            "name": "Build and update",
+            "timeout-minutes": 5,
+            "runs-on": "ubuntu-latest",
+            "steps": [
+                {
+                    "name": "Checkout executable repository",
+                    "uses": "actions/checkout@v1",
+                    "with": {
+                        "repository": "RobloxAPI/build-archive",
+                        "fetch-depth": 1,
+                        "ref": "master",
+                        "path": "build-archive",
+                    },
+                },
+                {
+                    "name": "Print Go environment",
+                    "env": {"GOROOT": "/usr/local/go1.14"},
+                    "run": "/usr/local/go1.14/bin/go version && /usr/local/go1.14/bin/go env",
+                },
+                {
+                    "name": "Generate module",
+                    "env": {"GOROOT": "/usr/local/go1.14"},
+                    "run": "
+                        cd $GITHUB_WORKSPACE/../../build-archive &&
+                        /usr/local/go1.14/bin/go mod init github.com/robloxapi/build-archive ||
+                        true
+                    ",
+                },
+                {
+                    "name": "Get dependencies",
+                    "env": {"GOROOT": "/usr/local/go1.14"},
+                    "run": "
+                        cd $GITHUB_WORKSPACE/../../build-archive &&
+                        /usr/local/go1.14/bin/go get -v -d ./...
+                    ",
+                },
+                {
+                    "name": "Compile executable",
+                    "env": {"GOROOT": "/usr/local/go1.14"},
+                    "run": "
+                        cd $GITHUB_WORKSPACE/../../build-archive/tools/update &&
+                        /usr/local/go1.14/bin/go build -v .
+                    ",
+                },
+                {
+                    "name": "Rebuild website",
+                    "run": "$GITHUB_WORKSPACE/../../build-archive/tools/update/update -config $GITHUB_WORKSPACE/../../build-archive/tools/update/config.json",
+                },
+                {
+                    "name": "Commit and push website",
+                    "env": {
+                        "ACCESS_TOKEN": "${{ secrets.ACCESS_TOKEN }}",
+                    },
+                    "run": "
+                        git config user.email 'updater@build-archive' &&
+                        git config user.name 'Updater' &&
+                        git remote set-url origin https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git &&
+                        git add -A &&
+                        git commit -m 'Update production files.' &&
+                        git push -n origin master ||
+                        true
+                    ",
+                },
+            ],
+        },
+    },
+}
