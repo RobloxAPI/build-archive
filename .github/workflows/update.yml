@@ -28,10 +28,6 @@
 					"run": "/usr/local/go1.14/bin/go version && /usr/local/go1.14/bin/go env",
 				},
 				{
-					"name": "Print Workspace directory",
-					"run": "ls -al $GITHUB_WORKSPACE",
-				},
-				{
 					"name": "Generate module",
 					"env": {"GOROOT": "/usr/local/go1.14"},
 					"run": "
@@ -57,11 +53,14 @@
 					",
 				},
 				{
-					"name": "Rebuild website",
-					"run": "$GITHUB_WORKSPACE/tools/update/update -config $GITHUB_WORKSPACE/tools/update/config.json",
+					"name": "Run updater",
+					"run": "
+						cd $GITHUB_WORKSPACE/tools/update &&
+						./update -config config.json
+					",
 				},
 				{
-					"name": "Commit and push website",
+					"name": "Commit and push",
 					"env": {
 						"ACCESS_TOKEN": "${{ secrets.ACCESS_TOKEN }}",
 					},
