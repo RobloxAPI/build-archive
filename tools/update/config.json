@@ -1,4 +1,13 @@
 {
+	"Paths": {
+		"Root": "../../data",
+		"GroupName": "production"
+	},
+	"Files": {
+		"API-Dump.json": true,
+		"ClassImages.png": true,
+		"ReflectionMetadata.xml": true
+	},
 	"Methods": {
 		"Builds": ["Builds"],
 		"Latest": ["Latest"],

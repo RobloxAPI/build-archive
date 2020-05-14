@@ -23,8 +23,6 @@ var ExpectedFiles = []expectedFile{
 }
 
 const (
-	RootPath         = "../../data"
-	GroupName        = "production"
 	BuildsDirName    = "builds"
 	MetadataFileName = "metadata.json"
 	LatestFileName   = "latest.json"
@@ -131,7 +129,32 @@ func main() {
 	flag.StringVar(&configFile, "config", "", "Configure update client.")
 	flag.Parse()
 
-	rootPath := filepath.Join(RootPath, GroupName)
+	var config struct {
+		Paths struct {
+			Root      string
+			GroupName string
+		}
+		Files map[string]bool
+		rbxfetch.Config
+	}
+
+	if configFile != "" {
+		b, err := ioutil.ReadFile(configFile)
+		but.IfFatal(err, "read config file")
+		but.IfFatal(json.Unmarshal(b, &config), "decode config")
+	}
+
+	{
+		e := ExpectedFiles[:0]
+		for _, efile := range ExpectedFiles {
+			if config.Files[efile.Name] {
+				e = append(e, efile)
+			}
+		}
+		ExpectedFiles = e
+	}
+
+	rootPath := filepath.Join(config.Paths.Root, config.Paths.GroupName)
 	buildsPath := filepath.Join(rootPath, BuildsDirName)
 	but.IfFatal(os.MkdirAll(buildsPath, 0755), "make builds directory")
 
@@ -148,13 +171,7 @@ func main() {
 
 	// Init client.
 	Client.CacheMode = rbxfetch.CacheNone
-	if configFile != "" {
-		b, err := ioutil.ReadFile(configFile)
-		but.IfFatal(err, "read config file")
-		var config rbxfetch.Config
-		but.IfFatal(json.Unmarshal(b, &config), "decode config")
-		but.IfFatal(Client.SetConfig(config), "set config")
-	}
+	but.IfFatal(Client.SetConfig(config.Config), "config client")
 
 	// Merge new builds.
 	{
