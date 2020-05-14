@@ -2,14 +2,12 @@
 	"Methods": {
 		"Builds": ["Builds"],
 		"Latest": ["Latest"],
+		"APIDump": ["APIDump"],
 		"ReflectionMetadata": ["ReflectionMetadata"],
 		"ClassImages": ["ClassImages", "ExplorerIcons"],
-		"Live": ["Live", "Live64"]
+		"Live": ["Live64", "Live"]
 	},
 	"Chains": {
-		"Builds": [
-			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/DeployHistory.txt"}}
-		],
 		"Latest": [
 			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/versionQTStudio"}}
 		],
@@ -18,6 +16,12 @@
 		],
 		"Live64": [
 			{"Filter": "url", "Params": {"URL": "https://versioncompatibility.api.roblox.com/GetCurrentClientVersionUpload/?apiKey=76e5a40c-3ae1-4028-9f10-7c62520bd94f&binaryType=WindowsStudio64"}}
+		],
+		"Builds": [
+			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/DeployHistory.txt"}}
+		],
+		"APIDump": [
+			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-API-Dump.json"}}
 		],
 		"ReflectionMetadata": [
 			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-RobloxStudio.zip"}},
