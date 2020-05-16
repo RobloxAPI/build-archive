@@ -71,6 +71,7 @@
 					"run": "
 						git config user.email 'updater@build-archive' &&
 						git config user.name 'Updater' &&
+            git checkout --progress --force master &&
 						git remote set-url origin https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git &&
 						git add -A &&
 						git commit -m 'Update production files.' &&
