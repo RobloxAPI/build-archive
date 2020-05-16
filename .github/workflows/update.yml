@@ -4,6 +4,7 @@
 		"schedule": [{"cron": "14 */6 * * *"}],
 		"push": {
 			"branches": ["master"],
+      "paths": [".github/workflows/update.yml"],
 		},
 	},
 	"jobs": {
