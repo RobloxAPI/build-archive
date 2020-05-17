@@ -3,7 +3,7 @@
 		"Root": "../../data",
 		"GroupName": "production"
 	},
-	"StartDate": "2018-08-07T00:00:00",
+	"StartDate": "2018-08-07T00:00:00Z",
 	"BuildTypes": {
 		"Studio": true
 	},
