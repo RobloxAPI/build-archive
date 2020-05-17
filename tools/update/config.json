@@ -3,6 +3,10 @@
 		"Root": "../../data",
 		"GroupName": "production"
 	},
+	"StartDate": "2018-08-07T00:00:00",
+	"BuildTypes": {
+		"Studio": true
+	},
 	"Files": {
 		"API-Dump.json": true,
 		"ClassImages.png": true,

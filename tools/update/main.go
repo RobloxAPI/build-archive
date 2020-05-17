@@ -10,9 +10,9 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"time"
 
 	"github.com/anaminus/but"
-	"github.com/robloxapi/rbxdump/histlog"
 	"github.com/robloxapi/rbxfetch"
 )
 
@@ -35,11 +35,37 @@ type expectedFile struct {
 	Method func(guid string) (r io.ReadCloser, err error)
 }
 
-type Version = histlog.Version
+func FilterBuildType(builds []rbxfetch.Build, types map[string]bool) []rbxfetch.Build {
+	bs := builds[:0]
+	for _, b := range builds {
+		if !types[b.Type] {
+			continue
+		}
+		bs = append(bs, b)
+	}
+	return bs
+}
+
+func FilterBeforeStart(builds []rbxfetch.Build, epoch time.Time) []rbxfetch.Build {
+	bs := builds[:0]
+	for _, b := range builds {
+		if b.Date.Before(epoch) {
+			continue
+		}
+		bs = append(bs, b)
+	}
+	return bs
+}
+
+type Build struct {
+	GUID    string
+	Date    time.Time
+	Version rbxfetch.Version
+}
 
 type Metadata struct {
 	Files   []string
-	Builds  []rbxfetch.Build
+	Builds  []Build
 	Missing map[string][]string
 }
 
@@ -134,7 +160,9 @@ func main() {
 			Root      string
 			GroupName string
 		}
-		Files map[string]bool
+		StartDate  time.Time
+		BuildTypes map[string]bool
+		Files      map[string]bool
 		rbxfetch.Config
 	}
 
@@ -177,6 +205,8 @@ func main() {
 	{
 		builds, err := Client.Builds()
 		but.IfFatal(err, "fetch builds")
+		builds = FilterBuildType(builds, config.BuildTypes)
+		builds = FilterBeforeStart(builds, config.StartDate)
 		type BuildKey struct {
 			GUID    string
 			Date    int64
@@ -200,7 +230,11 @@ func main() {
 			if _, ok := knownBuilds[key]; ok {
 				continue
 			}
-			meta.Builds = append(meta.Builds, build)
+			meta.Builds = append(meta.Builds, Build{
+				GUID:    build.GUID,
+				Date:    build.Date,
+				Version: build.Version,
+			})
 		}
 		sort.Slice(meta.Builds, func(i, j int) bool {
 			return meta.Builds[i].Date.Before(meta.Builds[j].Date)
