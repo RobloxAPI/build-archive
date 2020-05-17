@@ -33,8 +33,7 @@
 					"env": {"GOROOT": "/usr/local/go1.14"},
 					"run": "
 						cd $GITHUB_WORKSPACE &&
-						/usr/local/go1.14/bin/go mod init github.com/robloxapi/build-archive ||
-						true
+						/usr/local/go1.14/bin/go mod tidy -v
 					",
 				},
 				{
@@ -54,10 +53,6 @@
 					",
 				},
 				{
-					"name": "Ignore generated files",
-					"run": "echo -e '.gitignore\ngo.mod\ngo.sum\n/tools/update/update' >> .gitignore",
-				},
-				{
 					"name": "Run updater",
 					"run": "
 						cd $GITHUB_WORKSPACE/tools/update &&
@@ -72,7 +67,7 @@
 					"run": "
 						git config user.email 'updater@build-archive' &&
 						git config user.name 'Updater' &&
-            git checkout --progress --force master &&
+						git checkout --progress --force master &&
 						git remote set-url origin https://$GITHUB_ACTOR:$ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git &&
 						git add -A &&
 						git commit -m 'Update production files.' &&
