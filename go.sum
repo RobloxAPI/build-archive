@@ -1,0 +1,15 @@
+github.com/anaminus/but v0.2.0 h1:UPKY6UtvTZH8seod0rfVRsQxP8qssz+P6VE9a2AYeNY=
+github.com/anaminus/but v0.2.0/go.mod h1:44z5qYo/3MWnZDi6ifH3IgrFWa1VFfdTttL3IYN/9R4=
+github.com/anaminus/deep v0.0.0-20190609161759-a37cba07138a/go.mod h1:Huz2U5cYiGw7Yk7krg8FWM4MCyeVGuRBghqSh0Rsa7c=
+github.com/anaminus/iofl v0.3.0 h1:wj6TS0SBT0CRnYjQR0LNuqgLoEqSPjWT+CjYBnDf0qQ=
+github.com/anaminus/iofl v0.3.0/go.mod h1:HkJmhL517z7QMRs7St34AcyEkmk5oPO+CRLqEyIKys4=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/robloxapi/rbxapi v0.1.0 h1:xcve5EgsdXRBfRu6e5y03lHbcELkAjTuRCDw8OX060I=
+github.com/robloxapi/rbxapi v0.1.0/go.mod h1:YOxBbPE55ssodC1fGi8urHCDwntYrJg9FVjyY3sRX5o=
+github.com/robloxapi/rbxdhist v0.1.0 h1:zFHuAd/fYxKKRgko8giFrJE87wKbiMfkMC99IcQUHq0=
+github.com/robloxapi/rbxdhist v0.1.0/go.mod h1:LDwGu1rAliCi600a4apj6L1Uo7wiPPko+NA1RU/fHsM=
+github.com/robloxapi/rbxdump v0.3.0 h1:PhEtEkcC80y0cR2CWSs/PUp5sd5yZU0tDZiD7cFRoKU=
+github.com/robloxapi/rbxdump v0.3.0/go.mod h1:8imPIe5ZmLAhvmNKLu2E2S0QStvvXtt/0m5pxUGdGM0=
+github.com/robloxapi/rbxfetch v0.3.0 h1:DI8LkSpH5U9zJrQo1um6Hl/AmGo/HlNcQGYZ2C6UoME=
+github.com/robloxapi/rbxfetch v0.3.0/go.mod h1:f5QvhcmYuii4QPbUZ8Ma3YDW16yBpBf5WuUdcjD0qkE=
