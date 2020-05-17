@@ -114,6 +114,10 @@ func FetchFile(guid, dstpath string, method func(string) (io.ReadCloser, error))
 	}
 	defer src.Close()
 
+	if _, err := src.Read(nil); err != nil {
+		return fmt.Errorf("init file: %w", err)
+	}
+
 	dst, err := os.Create(dstpath)
 	if err != nil {
 		return fmt.Errorf("create file: %w", err)
