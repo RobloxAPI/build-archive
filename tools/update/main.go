@@ -275,6 +275,12 @@ func main() {
 		}
 	}
 
+	// Sort missing files.
+	for guid, missing := range meta.Missing {
+		sort.Strings(missing)
+		meta.Missing[guid] = missing
+	}
+
 	// Write metadata.
 	UpdateMetadata(rootPath, meta)
 
