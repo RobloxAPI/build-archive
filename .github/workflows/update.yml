@@ -28,34 +28,31 @@
 						"repository": "RobloxAPI/build-archive",
 						"fetch-depth": 1,
 						"ref": "master",
-						"path": "build-archive",
 					},
 				},
 				{
 					"name": "Generate module",
 					"run": "
-						cd $GITHUB_WORKSPACE &&
 						go mod tidy -v
 					",
 				},
 				{
 					"name": "Get dependencies",
 					"run": "
-						cd $GITHUB_WORKSPACE &&
 						go get -v -d ./...
 					",
 				},
 				{
 					"name": "Compile executable",
 					"run": "
-						cd $GITHUB_WORKSPACE/tools/update &&
+						cd tools/update &&
 						go build -v .
 					",
 				},
 				{
 					"name": "Run updater",
 					"run": "
-						cd $GITHUB_WORKSPACE/tools/update &&
+						cd tools/update &&
 						./update -config config.json
 					",
 				},
