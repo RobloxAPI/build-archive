@@ -15,7 +15,7 @@
 			"steps": [
 				{
 					"name": "Print environment",
-					"run": "printenv",
+					"run": "printenv && pwd",
 				},
 				{
 					"name": "Print Go environment",
