@@ -25,31 +25,27 @@
 				},
 				{
 					"name": "Print Go environment",
-					"env": {"GOROOT": "/usr/local/go1.14"},
-					"run": "/usr/local/go1.14/bin/go version && /usr/local/go1.14/bin/go env",
+					"run": "go version && go env",
 				},
 				{
 					"name": "Generate module",
-					"env": {"GOROOT": "/usr/local/go1.14"},
 					"run": "
 						cd $GITHUB_WORKSPACE &&
-						/usr/local/go1.14/bin/go mod tidy -v
+						go mod tidy -v
 					",
 				},
 				{
 					"name": "Get dependencies",
-					"env": {"GOROOT": "/usr/local/go1.14"},
 					"run": "
 						cd $GITHUB_WORKSPACE &&
-						/usr/local/go1.14/bin/go get -v -d ./...
+						go get -v -d ./...
 					",
 				},
 				{
 					"name": "Compile executable",
-					"env": {"GOROOT": "/usr/local/go1.14"},
 					"run": "
 						cd $GITHUB_WORKSPACE/tools/update &&
-						/usr/local/go1.14/bin/go build -v .
+						go build -v .
 					",
 				},
 				{
