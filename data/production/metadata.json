@@ -3194,6 +3194,21 @@
 			"GUID": "version-9b0015a0ec124323",
 			"Date": "2022-07-26T17:06:44-07:00",
 			"Version": "0.536.2.5360459"
+		},
+		{
+			"GUID": "version-a7e9cf37f70a404a",
+			"Date": "2022-08-02T16:22:52-07:00",
+			"Version": "0.538.0.5380364"
+		},
+		{
+			"GUID": "version-c177cc187c954b62",
+			"Date": "2022-08-02T16:30:11-07:00",
+			"Version": "0.538.0.5380364"
+		},
+		{
+			"GUID": "version-e66ba134b8ec4e81",
+			"Date": "2022-08-02T18:20:18-07:00",
+			"Version": "0.538.0.5380364"
 		}
 	],
 	"Missing": {
@@ -3766,6 +3781,10 @@
 			"ReflectionMetadata.xml"
 		],
 		"version-c141de8009434b60": [
+			"ClassImages.png",
+			"ReflectionMetadata.xml"
+		],
+		"version-c177cc187c954b62": [
 			"ClassImages.png",
 			"ReflectionMetadata.xml"
 		],
