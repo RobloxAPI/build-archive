@@ -102,6 +102,7 @@ The `production` directory contains builds that are added as they are released
 by Roblox. Each build contains the following files:
 
 - `API-Dump.json`: API dump in JSON format.
+- `Full-API-Dump.json`: Like API-Dump, but describes the full API.
 - `ReflectionMetadata.xml`: Reflection metadata file.
 
 *Some files, such as ReflectionMetadata.xml, are missing from many builds.
