@@ -6,6 +6,7 @@
 			"branches": ["master"],
 			"paths": [".github/workflows/update.yml"],
 		},
+    "workflow_dispatch": {},
 	},
 	"jobs": {
 		"update": {
