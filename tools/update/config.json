@@ -3,9 +3,9 @@
 		"Root": "../../data",
 		"GroupName": "production"
 	},
-	"StartDate": "2018-08-07T00:00:00Z",
+	"StartDate": "2023-06-01T00:00:00Z",
 	"BuildTypes": {
-		"Studio": true
+		"Studio64": true
 	},
 	"Files": {
 		"API-Dump.json": true,
