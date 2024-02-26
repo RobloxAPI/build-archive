@@ -689,7 +689,7 @@ func main() {
 		"CoordinateFrame": {{Category: "DataType", Name: "CoordinateFrame"}},
 		// All references removed.
 		"SystemAddress":        {{Category: "DataType", Name: "SystemAddress"}},
-		"BuildPermission":      {{Category: "Enum", Name: "BuildPermission"}},
+		"BuildPermission":      {{Category: "DataType", Name: "BuildPermission"}},
 		"PhysicsReceiveMethod": {{Category: "Enum", Name: "PhysicsReceiveMethod"}},
 		"PhysicsSendMethod":    {{Category: "Enum", Name: "PhysicsSendMethod"}},
 		"PrismSides":           {{Category: "Enum", Name: "PrismSides"}},

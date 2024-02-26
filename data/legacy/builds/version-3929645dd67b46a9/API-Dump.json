@@ -16756,7 +16756,7 @@
 					"Parameters": [
 						{
 							"Type": {
-								"Category": "Enum",
+								"Category": "DataType",
 								"Name": "BuildPermission"
 							},
 							"Name": "role"
