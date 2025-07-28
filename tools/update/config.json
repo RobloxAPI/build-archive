@@ -9,6 +9,7 @@
 	},
 	"Files": {
 		"API-Dump.json": true,
+		"API-Dump-2.json": true,
 		"Full-API-Dump.json": true,
 		"ClassImages.png": true,
 		"ReflectionMetadata.xml": true
@@ -18,6 +19,7 @@
 		"Latest": ["Latest"],
 		"APIDump": ["APIDump"],
 		"FullAPIDump": ["FullAPIDump"],
+		"APIDump2": ["APIDump2"],
 		"ReflectionMetadata": ["ReflectionMetadata"],
 		"ClassImages": ["ClassImages", "ExplorerIcons"],
 		"Live": ["Live64", "Live"]
@@ -40,6 +42,9 @@
 		],
 		"FullAPIDump": [
 			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-Full-API-Dump.json"}}
+		],
+		"APIDump2": [
+			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-API-Dump-2.json"}}
 		],
 		"ReflectionMetadata": [
 			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-RobloxStudio.zip"}},

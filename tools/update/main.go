@@ -19,6 +19,7 @@ import (
 var ExpectedFiles = []expectedFile{
 	{Name: "API-Dump.json", Method: Client.APIDump},
 	{Name: "Full-API-Dump.json", Method: func(guid string) (r io.ReadCloser, err error) { return Client.Method("FullAPIDump", guid) }},
+	{Name: "API-Dump-2.json", Method: func(guid string) (r io.ReadCloser, err error) { return Client.Method("APIDump2", guid) }},
 	{Name: "ClassImages.png", Method: Client.ClassImages},
 	{Name: "ReflectionMetadata.xml", Method: Client.ReflectionMetadata},
 }
