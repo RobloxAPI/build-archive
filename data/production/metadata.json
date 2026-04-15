@@ -6411,6 +6411,16 @@
 			"GUID": "version-hidden",
 			"Date": "2026-04-14T10:06:50-07:00",
 			"Version": "0.717.0.7170978"
+		},
+		{
+			"GUID": "version-hidden",
+			"Date": "2026-04-15T10:08:30-07:00",
+			"Version": "0.717.0.7170982"
+		},
+		{
+			"GUID": "version-hidden",
+			"Date": "2026-04-15T10:09:45-07:00",
+			"Version": "0.717.0.7170982"
 		}
 	],
 	"Missing": {
