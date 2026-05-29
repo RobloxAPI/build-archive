@@ -35,7 +35,7 @@
 			{"Filter": "url", "Params": {"URL": "https://versioncompatibility.api.roblox.com/GetCurrentClientVersionUpload/?apiKey=76e5a40c-3ae1-4028-9f10-7c62520bd94f&binaryType=WindowsStudio64"}}
 		],
 		"Builds": [
-			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/DeployHistory.txt"}}
+			{"Filter": "url", "Params": {"URL": "https://robloxapi.github.io/temp/DeployHistory.txt"}}
 		],
 		"APIDump": [
 			{"Filter": "url", "Params": {"URL": "https://setup.rbxcdn.com/$GUID-API-Dump.json"}}
