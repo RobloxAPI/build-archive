@@ -59,6 +59,17 @@ func FilterBeforeStart(builds []rbxfetch.Build, epoch time.Time) []rbxfetch.Buil
 	return bs
 }
 
+func FilterSkipGUIDs(builds []rbxfetch.Build, guids map[string]bool) []rbxfetch.Build {
+	bs := builds[:0]
+	for _, b := range builds {
+		if !guids[b.Type] {
+			continue
+		}
+		bs = append(bs, b)
+	}
+	return bs
+}
+
 type Build struct {
 	GUID    string
 	Date    time.Time
@@ -168,6 +179,7 @@ func main() {
 		}
 		StartDate  time.Time
 		BuildTypes map[string]bool
+		SkipGUIDs  map[string]bool
 		Files      map[string]bool
 		rbxfetch.Config
 	}
@@ -213,6 +225,7 @@ func main() {
 		but.IfFatal(err, "fetch builds")
 		builds = FilterBuildType(builds, config.BuildTypes)
 		builds = FilterBeforeStart(builds, config.StartDate)
+		builds = FilterSkipGUIDs(builds, config.SkipGUIDs)
 		type BuildKey struct {
 			GUID    string
 			Date    int64
