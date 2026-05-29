@@ -1,3 +1,7 @@
+> [!WARNING]
+> This repository is to be deprecated, and will eventually stop updating. Users
+> should migrate to alternative sources.
+
 # Roblox Lua API Archive
 This repository contains an archive of versions of the Roblox Lua API.
 
