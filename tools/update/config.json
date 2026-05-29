@@ -7,6 +7,9 @@
 	"BuildTypes": {
 		"Studio64": true
 	},
+	"SkipGUIDs": {
+		"version-hidden": true
+	},
 	"Files": {
 		"API-Dump.json": true,
 		"API-Dump-2.json": true,
