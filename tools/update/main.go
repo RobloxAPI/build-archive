@@ -62,7 +62,7 @@ func FilterBeforeStart(builds []rbxfetch.Build, epoch time.Time) []rbxfetch.Buil
 func FilterSkipGUIDs(builds []rbxfetch.Build, guids map[string]bool) []rbxfetch.Build {
 	bs := builds[:0]
 	for _, b := range builds {
-		if !guids[b.Type] {
+		if guids[b.GUID] {
 			continue
 		}
 		bs = append(bs, b)
