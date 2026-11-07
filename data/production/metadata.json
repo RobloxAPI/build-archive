@@ -6661,6 +6661,16 @@
 			"GUID": "version-7062aec9dbe74b14",
 			"Date": "2026-10-26T15:28:37-07:00",
 			"Version": "0.745.0.7451137"
+		},
+		{
+			"GUID": "version-67c8b1dedbb74fed",
+			"Date": "2026-11-05T09:03:39-08:00",
+			"Version": "0.746.0.7461269"
+		},
+		{
+			"GUID": "version-67c8b1dedbb74fed",
+			"Date": "2026-11-05T09:05:22-08:00",
+			"Version": "0.746.0.7461269"
 		}
 	],
 	"Missing": {
